@@ -1,0 +1,860 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <title>Go German</title>
+  <style>
+
+body {
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+    }
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background-color: #222;
+      color: white;
+      padding: 15px 20px;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
+    .logo {
+      font-size: 1.5em;
+      font-weight: bold;
+    }
+
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 20px;
+    }
+
+    nav a {
+      color: white;
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+    }
+
+    .hamburger span {
+      width: 25px;
+      height: 3px;
+      background-color: white;
+    }
+
+    @media (max-width: 600px) {
+      nav {
+        position: absolute;
+        top: 60px;
+        left: 0;
+        background-color: #333;
+        padding: 10px;
+        border-radius: 5px;
+        display: none;
+        width: 100%;
+      }
+
+      nav.show {
+        display: block;
+      }
+
+      nav ul {
+        flex-direction: column;
+        gap: 10px;
+        text-align: center;
+        margin: 0;
+      }
+
+      .hamburger {
+        display: flex;
+      }
+      /* Optional: Responsive Text */
+      .video-title {
+      font-size: 20px;
+  }
+    }
+
+    /* Slider */
+    .slider {
+      max-width: 100%;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .slides {
+      display: flex;
+      transition: transform 0.5s ease;
+    }
+
+    .slide {
+      min-width: 100%;
+      height: auto;
+    }
+
+    .slide img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+    /* video*/
+    .video-section {
+  padding: 40px 20px;
+  text-align: center;
+  background-color: #f9f9f9;
+}
+
+.video-title {
+  margin-bottom: 20px;
+  font-size: 24px;
+  color: #333;
+}
+
+.video-container {
+  position: relative;
+  width: 100%;
+  padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
+  height: 0;
+  overflow: hidden;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.video-container iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+
+
+.accordion-container {
+  width: 100%;
+  max-width: 85%;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.accordion-item {
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  margin-bottom: 10px;
+  overflow: hidden;
+  box-shadow: 0px 0px 5px rgba(0,0,0,0.05);
+}
+
+.accordion-button {
+  width: 100%;
+  padding: 15px 20px;
+  text-align: left;
+  background: #f7f7f7;
+  border: none;
+  outline: none;
+  font-size: 18px;
+  font-weight: bold;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.right-icon {
+  margin-left: 10px;
+}
+
+.accordion-content {
+  display: none;
+  padding: 10px 20px;
+  background: #fafafa;
+}
+
+.accordion-content ul {
+  list-style: none;
+  padding-left: 0;
+  margin: 0;
+}
+
+.accordion-content li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 0;
+  font-size: 16px;
+  color: #333;
+  position: relative;
+}
+.accordiontitle{
+  display: flex;
+    margin-bottom: 20px;
+    font-size: 20px;
+    justify-content: center;
+}
+.list-icon {
+  margin-right: 10px;
+  font-size: 18px;
+  color: #007bff;
+  flex-shrink: 0;
+}
+
+.popup-btn {
+  margin-left: 15px;
+  padding: 5px 10px;
+  background: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 12px;
+  white-space: nowrap;
+}
+
+/* Popup Style */
+.popup {
+  display: none;
+  position: fixed;
+  z-index: 999;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgb(0 0 0 / 90%);
+  justify-content: center;
+  align-items: center;
+}
+
+.popup-content {
+  background: #ffffff4d;
+  padding: 0px;
+  border-radius: 10px;
+  text-align: center;
+  max-width: 90%;
+  max-height: 90%;
+  overflow-y: auto;
+  position: relative;
+  border: 2px solid #fff;
+}
+
+.popup-content img {
+  width: 100%;
+  max-width: 100%;
+  margin: 0px;
+}
+
+.close-btn {
+  position: absolute;
+  top: 10px;
+  right: 25px;
+  font-size: 40px;
+  font-weight: bold;
+  color: rgb(255, 255, 255);
+  cursor: pointer;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  .accordion-button {
+    font-size: 16px;
+    padding: 12px 16px;
+  }
+  .accordion-content li {
+    font-size: 14px;
+  }
+  .close-btn{
+    top: 0px;
+    right: 7px;
+    font-size: 25px;
+  }
+}
+
+/* footer */
+
+.footer {
+  background-color: #222;
+  color: #fff; 
+  padding: 30px 20px;
+  font-family: Arial, sans-serif;
+}
+
+.footer-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.footer-left {
+  flex: 1;
+}
+
+.footer-left .logo {
+  font-size: 28px;
+  font-weight: bold;
+  margin-bottom: 0px;
+}
+
+.footer-left .subtitle {
+  font-size: 16px;
+}
+
+.footer-right {
+  display: flex;
+  gap: 15px;
+  padding: 0 5%;
+  margin-top: 15px;
+}
+
+.footer-right .social-icon {
+  color: #fff;
+  font-size: 24px;
+  transition: 0.3s;
+}
+
+.footer-right .si1:hover {
+  color: #00ff00; 
+}
+.footer-right .si2:hover {
+  color: #ff0000; 
+}
+.footer-line {
+  margin: 30px 0;
+  border: none;
+  height: 1px;
+  background: #555;
+}
+
+.footer-bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  font-size: 14px;
+}
+
+.footer-bottom a {
+  color: #fff;
+  text-decoration: none;
+}
+
+.footer-bottom a:hover {
+  text-decoration: underline;
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .footer-top,
+  .footer-bottom {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .footer-right {
+    margin-top: 20px;
+  }
+
+  .footer-bottom-right {
+    margin-top: 10px;
+  }
+}
+
+.course-offer {
+  background: #f9f9f9;
+  padding: 50px 20px;
+  color: #333;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.course-offer .container {
+  max-width: 800px;
+  margin: auto;
+  background: #fff;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.course-offer h2 {
+  text-align: center;
+  color: #007B5E;
+  margin-bottom: 20px;
+  font-size: 28px;
+}
+
+.course-offer .intro-text {
+  text-align: center;
+  margin-bottom: 30px;
+  font-size: 16px;
+}
+
+.features h3 {
+  margin-bottom: 15px;
+  color: #333;
+}
+
+.features ul {
+  list-style: none;
+  padding: 0;
+}
+
+.features ul li {
+  margin-bottom: 12px;
+  font-size: 16px;
+}
+
+.features ul li i {
+  color: green;
+  margin-right: 8px;
+}
+
+.pricing {
+  text-align: center;
+  margin: 30px 0;
+}
+
+.original-price {
+  text-decoration: line-through;
+  color: #888;
+}
+
+.offer-price {
+  font-size: 24px;
+  color: #E53935;
+  margin-top: 5px;
+}
+
+.contact {
+  text-align: center;
+  margin-top: 30px;
+}
+
+.whatsapp-btn {
+  display: inline-block;
+  margin-top: 15px;
+  background-color: #25D366;
+  color: white;
+  padding: 12px 25px;
+  border-radius: 25px;
+  text-decoration: none;
+  font-size: 16px;
+  transition: 0.3s;
+}
+
+.whatsapp-btn i {
+  margin-right: 8px;
+}
+
+.whatsapp-btn:hover {
+  background-color: #1DA851;
+}
+.highlight {
+  color: red;
+  font-weight: bold;
+}
+
+
+/* Mobile Responsive */
+@media (max-width: 600px) {
+  .course-offer h2 {
+    font-size: 22px;
+  }
+  .features ul li {
+    font-size: 14px;
+  }
+  .offer-price {
+    font-size: 20px;
+  }
+}
+
+
+
+  </style>
+
+</head>
+<body>
+
+  <header>
+    <div class="logo">Go German</div>
+
+    <div class="hamburger" id="hamburger">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+
+    <nav id="nav-menu">
+      <ul>
+        <li><a href="#slider">Home</a></li>
+        <li><a href="#course-details">Course Details</a></li>
+        <li><a href="#review">Review</a></li>
+        
+      </ul>
+    </nav>
+  </header>
+
+  <!-- Banner Slider -->
+  <section class="slider" id="slider" >
+    <div class="slides" id="slides">
+      <div class="slide"><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhskxy9z2ba8U0-FVinM6rN8Ojg6KxsB-yoMtV-jFJKqyadx3dAfWKjjLhAI8gYo0E6GQzomFBe45s-67wgEeaXq8VLD7_KWDbD0iWwlSg6EaANE34sIDj3KvYQHhKdbcqupIxlHVf2LdBrWsdqLQCyTDuOAZbC-mXEUpSJl-A3pmUJIOOMv2CnHVg85Q/s1600/1.png" alt="Banner 1"></div>
+      <div class="slide"><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiIQiPS3kNn6odeZDUKlCmMB-Qx2aF_ZTb7S1omvMqPHVvg4wNQhyEZWGgfqaLaFW4bCgQZkvAEC_N963euQyg4OY2FKrjLyNYY2MgKTojySeE1oFrSkV3EAMNm4m4QqDWFytiOKcmkA7w6-wcoIXYk75tGEW00HvDV9wdVbcX5Ovdi43Df8-6OdOBv8g/s1600/2.png" alt="Banner 2"></div>
+      <div class="slide"><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEilu0dqDBCglh0xGDN0vhdy44HvbAv6ZldtvF2z9zZw3she0E6ynJNEtJGu_3vggqpGjYL3bAJA8gqkr-3Jogck9e3OYOcGyNembZRBACWp8WbxJ3qeNeLeOFX5Y29uicqimFig-ccuSLAb8wgbuo9l6mU9Vw8S0X_C1o_npt3O_k3XklCRzKAXt2wgug/s1600/3.png" alt="Banner 3"></div>
+    </div>
+  </section>
+
+<!-- Font Awesome Icon Link -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
+<section class="course-offer" id="course-details">
+  <div class="container">
+    <h2> <span class="highlight">Life 360 Germany</span> এর জার্মান ভাষা শেখার সেরা সুযোগ!</h2>
+    <p class="intro-text">
+      জার্মান ভাষা শিখতে সাধারণত অনেক টাকা লাগে। কিন্তু অল্প টাকায় কোর্স করার জন্য এখন সেরা সুযোগ! <span class="highlight">Life 360 Germany</span> এর A1 - ২৪৪০৳ টাকার কোর্সটি শুধু আমরা দিচ্ছি বিশেষ অফারে অল্প দামে। কোর্সটি নেওয়ার জন্য মেসেজ করুন। অফারটি সীমিত সময়ের জন্য।
+    </p>
+
+    <div class="features">
+      <h3>কোর্সে যা যা থাকছে:</h3>
+      <ul>
+        <li><i class="fa fa-check-circle"></i> A1 লেভেলের সম্পূর্ণ ভিডিও টিউটোরিয়াল।</li>
+        <li><i class="fa fa-check-circle"></i> প্রয়োজনীয় সকল বই ও ভোকাবুলারির PDF।</li>
+        <li><i class="fa fa-check-circle"></i> Google Drive লিঙ্কের মাধ্যমে সহজে এক্সেস।</li>
+        <li><i class="fa fa-check-circle"></i> লাইফটাইম এক্সেস সুবিধা।</li>
+        <li><i class="fa fa-check-circle"></i> সকল PDF, নোটস এবং পরীক্ষার গুরুত্বপূর্ণ প্রশ্নপত্র।</li>
+      </ul>
+    </div>
+
+    <div class="pricing">
+      <p><span class="original-price">মূল্য: 19.99$ (2440৳)</span></p>
+      <p class="offer-price">বিশেষ অফার মূল্য: <strong>৪৯৯৳</strong></p>
+    </div>
+
+    <div class="contact">
+      <h4>কিভাবে কোর্সটি কিনবেন?</h4>
+      <p>জানতে WhatsApp-এ মেসেজ করুন!</p>
+      <a href="https://wa.me/qr/CZVUNY2PP7F2M1" class="whatsapp-btn" target="_blank">
+        <i class="fab fa-whatsapp"></i> WhatsApp এ যোগাযোগ করুন
+      </a>
+    </div>
+  </div>
+</section>
+
+  
+
+<!-- Font Awesome যুক্ত করতে হেডারে যুক্ত করো -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+<div class="accordion-container" >
+<div>
+  <h2 class="accordiontitle">কোর্সের বিস্তারিত এবং স্ক্রিনশট দেখুন:</h2>
+</div>
+  <div class="accordion-item">
+    <button class="accordion-button">
+      00 Introduction & Demo Videos
+      <span class="right-icon">▼</span>
+    </button>
+    <div class="accordion-content">
+      <ul>
+        <li><i class="fa fa-play-circle-o list-icon"></i> কোর্স শুরু করার আগে ভিডিওটি দেখুন, সেটিং এবং কমেন্ট কিভাবে করবেন? <button class="popup-btn" data-images="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhw5GdN1l9UA_jedee-GysA8K92qEQuYevOAMgZjO2MaoI-q-jl9x20cjZYAnNFYv_vGv3LOmcKSXmoztPyFWpQ29iKlM_JWuUsnikIfgwPUg4kbPizqvs6mgqSgNqToxvLJ1wmkfIgVZqo1wz-nEe4neUP0oeO_S_DwJ1G8SnapQUQrIggX-1izR6CcQ/s1909/s%20(1).png">Screenshot</button></li>
+        <li><i class="fa fa-play-circle-o list-icon"></i> কেন বাংলায় জার্মান A1 কোর্স এবং কাদের জন্য এই কোর্স? Free Video 01 <button class="popup-btn" data-images="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhlDzbaDT85pkZxfITMmCB6ZJ_OmKVlNaCp9OqnrUIpEoSdDhaN4UmSo69K-yW3Khaqdb8PtOiyy5N8HejXPWvh5apGa5ZRLWu8hyphenhyphenwvo9MGj4AJRPpMkLJSwELraRUQgqpnidy3O8eM5Q7ZqqgPtGyX1bfNvsmd85MT2E-1pVMpFTCDM5rlK6kGl4vaqA/s1920/s%20(2).png">Screenshot</button></li>
+        <li><i class="fa fa-play-circle-o list-icon"></i> মাত্র ৫ মিনিটে German Number শিখুন ১০০ পর্যন্ত, এক প্যাটার্নেই সব Free Video-02 <button class="popup-btn" data-images="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiwiJer3zrYyc0iGrOAyuyjlzAhXlMj6qwxB34Y9YW5YGLujft5saGFM9Iu6rxUw_eHVYDRf0ydRGaSvRWN_okx0riiCm0TqaQ5ftcuumPAHqp1uAcOz95ENx2jJo5E_NvpMz6rq-2L6bw8saICy9R5ROsiBZpRfKpbA1QbC8oFMHdWVZpzC_KVA_u4HQ/s1920/s%20(3).png">Screenshot</button></li>
+        <li><i class="fa fa-play-circle-o list-icon"></i> মাত্র 3 মিনিটে, German Big Number শিখুন Free Video 04 <button class="popup-btn" data-images="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhw4BXIfQYiNapAB1n7V401ychznlnRJz_FPDZteWnoCqkxoGNOGmVltQ1MPEv7quQ8Ubumgfep23raQ8P6C7Uf76QrWyFLDYUq4KAf9nza_5qTCQl8IxqVi-xxCpPSQCCKYth3D9G_v61Wc-U_Z0gW6btcCxdFIxUAn-Oj2-r6J0LgpqNNeUQIZ_KwhA/s1920/s%20(4).png">Screenshot</button></li>
+        <li><i class="fa fa-play-circle-o list-icon"></i> মাত্র 2 মিনিটে, Nominative, Accusative and Dative case Free Video-03 <button class="popup-btn" data-images="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEirHJ5fNXYn476EckzM7tVjKlUVFRFpL3ZdpuZt-Tl4m_ORGMGE2bU2w6nHNlwkLZVtYtgPD2Np_kYcu6ktrsinBVeW5x9EXczEsmrg4q7s_YmSBwuCdCMgUeF0kC6EBJJkie9ELO8gEnCb8EQZ7hwPVQDoKDZQ21Id201dVBd4xnFiQ3kNw70qbS548A/s1920/s%20(5).png">Screenshot</button></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="accordion-item">
+    <button class="accordion-button">
+      01 শুরু করুন, পরম করুনাময় আল্লাহর নামে - প্রথম অধ্যায়
+      <span class="right-icon">▼</span>
+    </button>
+    <div class="accordion-content">
+      <ul>
+        <li><i class="fa fa-play-circle-o list-icon"></i> German Alphabet Lecture-01 <button class="popup-btn" data-images="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgCnlq6VxEFyOwnxTTYgxVHpGRBw3S3-r9JhbK7l2SGJ5SVYbPRqZUqn9KNLUELiCM7nH6FFzXU7OvvDP7P7VVVJ32mqK4XrBHBO-Xd1JGoJfYd2EujZ9bJWzkGfXRqBXZltnMkEARzCOC9eaJkesgdA5MyJG4yFINJ6LYrTwkMe1_lLjW5L_5VR9BbNQ/s1600/s2%20%281%29.png,https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgojmrELnlkmJHUqa1IVIoWgPsFBFW7G8yNg0h8XkLEeNzpAjjz5S2uya22RJNp2MzUyFLlMFzjpgl1bOQDGRn7kdMdW9HkC-1jgNPtXAZ0cMzFunEktn1fvvBIT4FEV5c9C-ZwFlMQYgGA_P5O8Wki5nO7PqKqgkh68IiGX1C1skwkIZ81ic5YQ8bAZg/s1600/s2%20%286%29.png ">Screenshot</button></li>
+        <li><i class="fa fa-play-circle-o list-icon"></i> German Numbers Lecture-02 <button class="popup-btn" data-images="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEh-2TvQHcMN169HY3tfv-Rec0BIXveb-o2FA70RgNWLAAJcpxGAWCwpJLfrLKZ20sOqYXUk0HuAF5a7XhaI0WaJ3eqQCa5tBboNxBKb5714RIZj1SqQiAwkVLq1HXAVBEUgFjX1zXG5RnPZCG5MbpGBOO9IrFXm6-RK38Czfe5SHZ5lFpfSWIFRBHfafg/s1600/s2%20%282%29.png, https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhtyQCcxhyphenhyphenqTwIsVRch4jPA7t394yFzkk4LDjqEtPkpkzQ49kKus_PhOQhxxL53wUlRGtWYCuGqihj8lVmY4dAIhKraNb2ZOmu_c9c_UelOsfxxOjhj2k1QRavePcxe0Xmx9rcoJiUHD1YI0qDLRaQi2ZXZfXzQleOfpMxxDHxsJYHrYrd_E5pegMe68g/s1600/s2%20%287%29.png">Screenshot</button></li>
+        <li><i class="fa fa-play-circle-o list-icon"></i> German Big Numbers Lecture-03 <button class="popup-btn" data-images="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEi-CvXknPV5upxjeTXU7voeeeidLaUmkfoO8qCM14BsucYaFaTqBrOEkUdLs14DvIWQjcNa53g8P_TIkYY02tAMZFagMuLB4a-9sWrXcqAZa8_raeEru8pdJ6OFCKoi6wphczmM2c6_aZoEb2NT0A4ZfsZhSFhUhXKpS3yIFpx2A1JuTGEP_cOJfdj1JQ/s1600/s2%20%283%29.png">Screenshot</button></li>
+        <li><i class="fa fa-play-circle-o list-icon"></i> Top 500 German Words List A1 word list Lecture-04a <button class="popup-btn" data-images="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjAb8pOc4qqx0Jk9UUeuHIaoqdC2ty9M_Qq7rdc8hyphenhyphenoERECGMS4xB-FZcabnuY1N1IKL5MBx7PUKNasUbZRL6IzZpNgTF8qK9zOykcJlpHXH6yE6bKTk66r_soRDtEz90inEYskCdUzUJmcQySwaYaE5UxTkwr0vUNoQBVukbSbz3wYpPkBC-lW5n0sQA/s1600/s2%20%284%29.png, https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjAYkOAJns507mWUEc8yXdAxOL4nReQFBFXCQ46zQ7YZnQx6x9g0ihj0OJLkzSwMpfm6P0MFxog2ZhzfLOkzUY7EZ3Twd4WiXfsBvzURGxUDRvx_wrAZQuO8TAqlhdW0EfljzrOkSzhT1oinoKdHNIYrIJv2bkAKawTHQH3KPnTInWwOvuiTS18VD8dbw/s1600/s2%20%288%29.png">Screenshot</button></li>
+        <li><i class="fa fa-play-circle-o list-icon"></i> Personal pronoun Lecture-04b <button class="popup-btn" data-images="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhEpItvMHmhGJY40E8j09HexxU4aiENy7wOfniswKL0rSXC5hMUzphjWVLOjvryzTzVdNgcwqhcxVElMVN8FghHmg6pcy5hyqN4Joej_8xfcSLPZ_3rkeGq8SL-iAyosEmSp_mZT37fnMs1eU3Yp7n5DojljOtql0VlBEQOT_bVP-4SDRusDsFM_N4D-Q/s1600/s2%20%285%29.png">Screenshot</button></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="accordion-item">
+    <button class="accordion-button">
+      02 German Verbs
+      <span class="right-icon">▼</span>
+    </button>
+    <div class="accordion-content">
+      <ul>
+        <li><i class="fa fa-play-circle-o list-icon"></i> How to conugate German verbs?_Lecture-05 <button class="popup-btn" data-images="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgJwsPkM-PBis1AIvLXXzjh8V8yl_-nESPPGQaGGjNxaLOajruaZHxVQ_mYBKvGXA1RftZXxkaUvNCmQwvxvzlb7UgV7hc6w5JN_OXi7LOhHY1ke3noFxFUYs5RhJCqEjVtv1V1e5i6SxbCHw5wBoAyqvT_7Y942rEtApTdb8hMJn9hsdqwYgmxBUcimA/s1719/s3%20(1).png, https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjraqV9JBCoQ-5wlB-SA3_pbQfhL2FHCNJ8iuoISTR-RAA_y2xlcCeKy94BIQKGKih-e9hBAi0ccJcnYGXVupVPpkyPUZKxz7eObIX7E1X5tAKhy13dWnkqO5z9L6ZNkoYmJN9Ib92rB9hIGCyr_pJouIX6HhVXNpNp2Hsr2W4UNGNl65C6ORAYiRtAoQ/s1723/s3%20(5).png">Screenshot</button></li>
+        <li><i class="fa fa-play-circle-o list-icon"></i> Very useful 100 German verbs ( PDF available) _Lecture-06 <button class="popup-btn" data-images="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjVpa6h5NflwirXRmtAaqgHB3BJ2zpFcPLY9siV-O79__IhZCmlUDP37X8SBVdc96wRG3aJg0Y1VHFn7OoLn-SUYmKJ_Y3UNMRpBN3gfMRvddxRytM9MSfr6UbeqdZtmaw8LNkmRIc8vekI2v2LwjTirPlSDWiQ-_KhgnHdPfcQCKASAiQ7EAsLazt4Mg/s1727/s3%20(2).png">Screenshot</button></li>
+        <li><i class="fa fa-play-circle-o list-icon"></i> Seperable and Inseperable German verbs_Lecture-07 <button class="popup-btn" data-images="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiOUUo8FifoFNgdX3RVD2CWojGbsxi_0uyk_ZDSREjApvz0XEM957OhFOm8kGj5o5H3qQFunKnrvWS0mDJeJVfeosEAk0LT9xjJp2s3uWYx2_W1hl5GQCKUEahRyzNsUu79OdKFgcpCs76ZHtydYdvajLdv7mA7VBfSj3c1SMlH9InE7eCuYGHFvzn0jQ/s1716/s3%20(3).png">Screenshot</button></li>
+        <li><i class="fa fa-play-circle-o list-icon"></i> List of Modal verbs_Lecture-08 <button class="popup-btn" data-images="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgGEqIzVKsj8hu5RJSEowzObsBdeKfk4NMFFVSVq8aLtj0IjctDJsWFaUTrUdyYbFL2gIKPdLbngR4qzy4wVczsMq8kaaHjKzq_RGrecu80bJXIqy9biRLqVOrETvDZk6pPybTW8nsjSICitCIbldnlry1Rfk-OfJStsu-CPLhvmRQgkUxXtJ8KeGdOvQ/s1723/s3%20(4).png">Screenshot</button></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="accordion-item">
+    <button class="accordion-button">
+      03 German Adjectives & All personal pronouns
+      <span class="right-icon">▼</span>
+    </button>
+    <div class="accordion-content">
+      <ul>
+        <li><i class="fa fa-play-circle-o list-icon"></i> All personal pronoun_Lecture-09 <button class="popup-btn" data-images="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjLGkKQmw48UwcXCrhHPJVN245l_PWica8AcVTLv5Br4hdT6tl0S9L4UmgkjNZmX1JgjmSkRErvhJa3qwV0NzyuvanX7z9Cm4zkJl-5fBmCXaM1cdsGlOhUUtJ8nvdUjgSXyBnq_YlO4r2Vq6-5_aUH2fZNuoTeAikrhiQMCGsTaBEPIxMKlwy3HZIGTQ/s1717/s4%20(1).png">Screenshot</button></li>
+        <li><i class="fa fa-play-circle-o list-icon"></i> German Adjectives_Lecture-10 <button class="popup-btn" data-images="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgGD-3uwgbo8WgfyyTmq-hMtOSDzxeVRfMnyPq1SRiNHTUZOjE3pFfTrn4FAHfimg7H7XXT8kBttyk7qfPa6ycct67zfhBLKjQyCUITo0OX5vBvJAJoH2D46uRJasLXAbqulckRlJlScsLg8bqhGW8pdPf54dCAHj86C4lphFB2JJlgiPCG87n8cIIBrg/s1718/s4%20(2).png">Screenshot</button></li>
+        <li><i class="fa fa-play-circle-o list-icon"></i> Comparison of regular adjectives_Lecture-11 <button class="popup-btn" data-images="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiPkPuhe7H_8pLzaaUl0Wo_nzUZfN8u24jVTSSoEw3J9gmd9XHdQJ9dCG0mjuATJvev4xu3cWRygp67CZj4j0AVkkNEd51k2tuB2p1MNwzm5V2IaaTwlTZhlLIule091ZNBDzE4MQHnGi9fH1qCE-PGvSJlWxAxsMnN-OxtCpC6fbT-yKbRIenDDrJpDA/s1754/s4%20(3).png">Screenshot</button></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="accordion-item">
+    <button class="accordion-button">
+      04 German Cases / Fall
+      <span class="right-icon">▼</span>
+    </button>
+    <div class="accordion-content">
+      <ul>
+        <li><i class="fa fa-play-circle-o list-icon"></i> Fall Nominativ_Lecture-12 <button class="popup-btn" data-images="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhc-XiabNIqr2zzhyphenhyphenjbcmQAuCtLYBngGSQddrYTk15TVeQAAc8wuvvAPUcxjCJCMoEXfZR2utvCrCtrAH9vpR8sIuJdkE2Bg-DbJLF8XZxytFOPE41ZnVJO0r9uLEC4N5dXo84AH8jNSCSBdoETHGOM8RPv0tpt3xJoaSk6wzz3NDkAC1EMxBBhPs5BJw/s1724/s5%20(1).png">Screenshot</button></li>
+        <li><i class="fa fa-play-circle-o list-icon"></i> Fall Akkusativ_Lecture-13 <button class="popup-btn" data-images="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEi6C4o9AsU1YrfQ4LFFcFxN9C7_aFLuoalcmZI5nxJ7ImJYibKw0H1nGC_1JFLnctaYO5X44enVntTbvlNjaJv_sI2jafj1L7-02ZF_Di7iiPISC7gV5S_UtVdKPdy_zeketJTEyr_TZsCJjEw07Pn4KsPCJSu-Q7cUcpVtzKweuU735W8WK0cCqOBYQQ/s1722/s5%20(2).png">Screenshot</button></li>
+        <li><i class="fa fa-play-circle-o list-icon"></i> Definite and Indefinite Articles_Lecture-14 <button class="popup-btn" data-images="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEh-uUWVCsZ7TtdAAd1Xjkay3Vrf1coriPVRPZEh987kNJHsETBzB3Uvyu5MP_hdR0RwBgNqdf8PIKw7QwMsu2qnXcuMOWgowbDlyTwOxwvTQgFtUiBlHTn2USIOwcmLKV4173Tti2QNam_CN9Wk5EmUQkaUd56mirtgLaG79I2Dw53pyJ3CjZnRZWIdDg/s1725/s5%20(3).png">Screenshot</button></li>
+        <li><i class="fa fa-play-circle-o list-icon"></i> Fall Dativ_Lecture-15 <button class="popup-btn" data-images="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhlGM_daIMN3rKX5-_4nVswdNStqsn6Ixm10nMdJjqBjIZkVvT8UkrrdzwJlSkkWY_X6Ucx9ceXsaOEXoxIPlV_QY34dv0ByqjAmJ-Eh7PqLI9eG06OPWBho6wI7EQ_xm9Ygz4bI0oU4rUx-TV-dJvpV4A14CxVzAadgWwpEg_kFYIMvnlYy0h0SiOejw/s1721/s5%20(4).png">Screenshot</button></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="accordion-item">
+    <button class="accordion-button">
+      05 Preposition, Negation & Sentence Structure
+      <span class="right-icon">▼</span>
+    </button>
+    <div class="accordion-content">
+      <ul>
+        <li><i class="fa fa-play-circle-o list-icon"></i> Two way prepositions_Lecture-16 <button class="popup-btn" data-images="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhhBYKFjmJo2r6RfMoLcc6QdoPxwXIyBfDEdMJ0hV8-n6gVM24f6Yoxz49egcTaWyPdw_TNnRTsB_8ZDzh-KcPa-dehjn_JrVU00K8Ds2-XqpCZ-xx87ZslTlZqn4RB25Sxb9mYaloOu6pj-hNzDBrpXizdASo1AY_FLRquDXp6eBqFFzYCCSRRTair0A/s824/s6.png">Screenshot</button></li>
+        <li><i class="fa fa-play-circle-o list-icon"></i> Negation_Kein Oder Nicht_Lecture-17 <button class="popup-btn" data-images="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhhBYKFjmJo2r6RfMoLcc6QdoPxwXIyBfDEdMJ0hV8-n6gVM24f6Yoxz49egcTaWyPdw_TNnRTsB_8ZDzh-KcPa-dehjn_JrVU00K8Ds2-XqpCZ-xx87ZslTlZqn4RB25Sxb9mYaloOu6pj-hNzDBrpXizdASo1AY_FLRquDXp6eBqFFzYCCSRRTair0A/s824/s6.png">Screenshot</button></li>
+        <li><i class="fa fa-play-circle-o list-icon"></i> Sentence Structure A to Z_Lecture-18 <button class="popup-btn" data-images="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhhBYKFjmJo2r6RfMoLcc6QdoPxwXIyBfDEdMJ0hV8-n6gVM24f6Yoxz49egcTaWyPdw_TNnRTsB_8ZDzh-KcPa-dehjn_JrVU00K8Ds2-XqpCZ-xx87ZslTlZqn4RB25Sxb9mYaloOu6pj-hNzDBrpXizdASo1AY_FLRquDXp6eBqFFzYCCSRRTair0A/s824/s6.png">Screenshot</button></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="accordion-item">
+    <button class="accordion-button">
+      06 German Time & Article
+      <span class="right-icon">▼</span>
+    </button>
+    <div class="accordion-content">
+      <ul>
+        <li><i class="fa fa-play-circle-o list-icon"></i> German months, days and season_Lecture-19 <button class="popup-btn" data-images="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhhBYKFjmJo2r6RfMoLcc6QdoPxwXIyBfDEdMJ0hV8-n6gVM24f6Yoxz49egcTaWyPdw_TNnRTsB_8ZDzh-KcPa-dehjn_JrVU00K8Ds2-XqpCZ-xx87ZslTlZqn4RB25Sxb9mYaloOu6pj-hNzDBrpXizdASo1AY_FLRquDXp6eBqFFzYCCSRRTair0A/s824/s6.png">Screenshot</button></li>
+        <li><i class="fa fa-play-circle-o list-icon"></i> German Time_Lecture-20 <button class="popup-btn" data-images="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhhBYKFjmJo2r6RfMoLcc6QdoPxwXIyBfDEdMJ0hV8-n6gVM24f6Yoxz49egcTaWyPdw_TNnRTsB_8ZDzh-KcPa-dehjn_JrVU00K8Ds2-XqpCZ-xx87ZslTlZqn4RB25Sxb9mYaloOu6pj-hNzDBrpXizdASo1AY_FLRquDXp6eBqFFzYCCSRRTair0A/s824/s6.png">Screenshot</button></li>
+        <li><i class="fa fa-play-circle-o list-icon"></i> German Article_Lecture-21 <button class="popup-btn" data-images="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhhBYKFjmJo2r6RfMoLcc6QdoPxwXIyBfDEdMJ0hV8-n6gVM24f6Yoxz49egcTaWyPdw_TNnRTsB_8ZDzh-KcPa-dehjn_JrVU00K8Ds2-XqpCZ-xx87ZslTlZqn4RB25Sxb9mYaloOu6pj-hNzDBrpXizdASo1AY_FLRquDXp6eBqFFzYCCSRRTair0A/s824/s6.png">Screenshot</button></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="accordion-item">
+    <button class="accordion-button">
+      07 Daily Life Conversation
+      <span class="right-icon">▼</span>
+    </button>
+    <div class="accordion-content">
+      <ul>
+        <li><i class="fa fa-play-circle-o list-icon"></i> German Greetings_Lecture-22 <button class="popup-btn" data-images="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhiKxAiWl_vFApUI-FB_1KvOn2id0Id8Ni5s54q57fkD8ZXVM6wZpfpIyEgRy6EwGFaaclADZQHi4ue7Hwnoky3BPJHs5HkdLh_3cQrnVyRRO7YKn-GPPftZHQpfg2CPKlb8mlAbFzD_GwlfDLep7CsG8beph0w9IF7p5Q1w3pLwSYgYc5LokUb-VrbsA/s1572/s8.png">Screenshot</button></li>
+        <li><i class="fa fa-play-circle-o list-icon"></i> Kennen oder Wissen_Lecture-23 <button class="popup-btn" data-images="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhiKxAiWl_vFApUI-FB_1KvOn2id0Id8Ni5s54q57fkD8ZXVM6wZpfpIyEgRy6EwGFaaclADZQHi4ue7Hwnoky3BPJHs5HkdLh_3cQrnVyRRO7YKn-GPPftZHQpfg2CPKlb8mlAbFzD_GwlfDLep7CsG8beph0w9IF7p5Q1w3pLwSYgYc5LokUb-VrbsA/s1572/s8.png">Screenshot</button></li>
+        <li><i class="fa fa-play-circle-o list-icon"></i> Future Tense_Lecture-24 <button class="popup-btn" data-images="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhiKxAiWl_vFApUI-FB_1KvOn2id0Id8Ni5s54q57fkD8ZXVM6wZpfpIyEgRy6EwGFaaclADZQHi4ue7Hwnoky3BPJHs5HkdLh_3cQrnVyRRO7YKn-GPPftZHQpfg2CPKlb8mlAbFzD_GwlfDLep7CsG8beph0w9IF7p5Q1w3pLwSYgYc5LokUb-VrbsA/s1572/s8.png">Screenshot</button></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="accordion-item">
+    <button class="accordion-button">
+      08 Additional Lectures
+      <span class="right-icon">▼</span>
+    </button>
+    <div class="accordion-content">
+      <ul>
+        <li><i class="fa fa-play-circle-o list-icon"></i> Formal & Informal letter writing_Lecture-25 <button class="popup-btn" data-images="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgp-HqXugv2YfqRxOJYQloHMbXmiY1j_SYrcOFGRt59nBpHvfrmThXh47MlesMcqKMn2lMz6qUli6TYLEktnhtz9UIWfFsX6HBedvjsdDNnG5wv8ZY0D_ZsCC9tfVWlPdRnmn7B05z027zPz6DZgpgm5K-bFpOczJj8lnpkQ2TakW2LWvuypsFbBufK_Q/s1565/s9.png">Screenshot</button></li>
+        <li><i class="fa fa-play-circle-o list-icon"></i> Instructions and tasks_Lecture-26 <button class="popup-btn" data-images="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgp-HqXugv2YfqRxOJYQloHMbXmiY1j_SYrcOFGRt59nBpHvfrmThXh47MlesMcqKMn2lMz6qUli6TYLEktnhtz9UIWfFsX6HBedvjsdDNnG5wv8ZY0D_ZsCC9tfVWlPdRnmn7B05z027zPz6DZgpgm5K-bFpOczJj8lnpkQ2TakW2LWvuypsFbBufK_Q/s1565/s9.png">Screenshot</button></li>
+        <li><i class="fa fa-play-circle-o list-icon"></i> German Slang Words_Lecture-27 <button class="popup-btn" data-images="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgp-HqXugv2YfqRxOJYQloHMbXmiY1j_SYrcOFGRt59nBpHvfrmThXh47MlesMcqKMn2lMz6qUli6TYLEktnhtz9UIWfFsX6HBedvjsdDNnG5wv8ZY0D_ZsCC9tfVWlPdRnmn7B05z027zPz6DZgpgm5K-bFpOczJj8lnpkQ2TakW2LWvuypsFbBufK_Q/s1565/s9.png">Screenshot</button></li>
+        <li><i class="fa fa-play-circle-o list-icon"></i> Vocabulary_Lecture-28 <button class="popup-btn" data-images="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgp-HqXugv2YfqRxOJYQloHMbXmiY1j_SYrcOFGRt59nBpHvfrmThXh47MlesMcqKMn2lMz6qUli6TYLEktnhtz9UIWfFsX6HBedvjsdDNnG5wv8ZY0D_ZsCC9tfVWlPdRnmn7B05z027zPz6DZgpgm5K-bFpOczJj8lnpkQ2TakW2LWvuypsFbBufK_Q/s1565/s9.png">Screenshot</button></li>
+        <li><i class="fa fa-play-circle-o list-icon"></i> Common German Idioms_Lecture-29 <button class="popup-btn" data-images="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgp-HqXugv2YfqRxOJYQloHMbXmiY1j_SYrcOFGRt59nBpHvfrmThXh47MlesMcqKMn2lMz6qUli6TYLEktnhtz9UIWfFsX6HBedvjsdDNnG5wv8ZY0D_ZsCC9tfVWlPdRnmn7B05z027zPz6DZgpgm5K-bFpOczJj8lnpkQ2TakW2LWvuypsFbBufK_Q/s1565/s9.png">Screenshot</button></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="accordion-item">
+    <button class="accordion-button">
+      09 German A1 Exam Preparation
+      <span class="right-icon">▼</span>
+    </button>
+    <div class="accordion-content">
+      <ul>
+        <li><i class="fa fa-play-circle-o list-icon"></i> True False_10 Questions <button class="popup-btn" data-images="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjea781-l7e4ADJx_I0g-QWCDWETH-q3M5tMhl1iSeDHapmAiVg7MsRWMbpJ-6OvQpXwK0EbNjs7lhi-XKMoGxNr_lg8_0om2vjATmE6VsVRqpCTmSfxlGrbX7UVVgC-F5NgNGoAn125nPYa4diKPSmv2Zzztnp2AuQE8cC5Jx7Zl0xbOnwOPuEf7hXZA/s1579/s10.png">Screenshot</button></li>
+        <li><i class="fa fa-play-circle-o list-icon"></i> German Number_10 Questions <button class="popup-btn" data-images="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjea781-l7e4ADJx_I0g-QWCDWETH-q3M5tMhl1iSeDHapmAiVg7MsRWMbpJ-6OvQpXwK0EbNjs7lhi-XKMoGxNr_lg8_0om2vjATmE6VsVRqpCTmSfxlGrbX7UVVgC-F5NgNGoAn125nPYa4diKPSmv2Zzztnp2AuQE8cC5Jx7Zl0xbOnwOPuEf7hXZA/s1579/s10.png">Screenshot</button></li>
+        <li><i class="fa fa-play-circle-o list-icon"></i> Nominative Case_10 Questions <button class="popup-btn" data-images="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjea781-l7e4ADJx_I0g-QWCDWETH-q3M5tMhl1iSeDHapmAiVg7MsRWMbpJ-6OvQpXwK0EbNjs7lhi-XKMoGxNr_lg8_0om2vjATmE6VsVRqpCTmSfxlGrbX7UVVgC-F5NgNGoAn125nPYa4diKPSmv2Zzztnp2AuQE8cC5Jx7Zl0xbOnwOPuEf7hXZA/s1579/s10.png">Screenshot</button></li>
+        <li><i class="fa fa-play-circle-o list-icon"></i> Reading Test <button class="popup-btn" data-images="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjea781-l7e4ADJx_I0g-QWCDWETH-q3M5tMhl1iSeDHapmAiVg7MsRWMbpJ-6OvQpXwK0EbNjs7lhi-XKMoGxNr_lg8_0om2vjATmE6VsVRqpCTmSfxlGrbX7UVVgC-F5NgNGoAn125nPYa4diKPSmv2Zzztnp2AuQE8cC5Jx7Zl0xbOnwOPuEf7hXZA/s1579/s10.png">Screenshot</button></li>
+        <li><i class="fa fa-play-circle-o list-icon"></i> Sprechen A1 – Teil 1: Sich vorstellen (Introduce yourself) <button class="popup-btn" data-images="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjea781-l7e4ADJx_I0g-QWCDWETH-q3M5tMhl1iSeDHapmAiVg7MsRWMbpJ-6OvQpXwK0EbNjs7lhi-XKMoGxNr_lg8_0om2vjATmE6VsVRqpCTmSfxlGrbX7UVVgC-F5NgNGoAn125nPYa4diKPSmv2Zzztnp2AuQE8cC5Jx7Zl0xbOnwOPuEf7hXZA/s1579/s10.png">Screenshot</button></li>
+      </ul>
+    </div>
+  </div>
+
+</div>
+
+<!-- Popup Box -->
+<div id="popup" class="popup">
+  <div class="popup-content">
+    <span class="close-btn">&times;</span>
+    <div id="popup-images"></div>
+  </div>
+</div>
+
+
+  <!-- video -->
+  <div class="video-section">
+    <h2 class="video-title">বিস্তারিত দেখুন:</h2>
+    <div class="video-container">
+      <iframe src="https://www.youtube.com/embed/yuVsTeND8Hs?si=VmLLE5Fzm5_w4x-i"
+        title="YouTube video player"
+        frameborder="0"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+        allowfullscreen
+        referrerpolicy="strict-origin-when-cross-origin">
+      </iframe>
+    </div>
+  </div>
+
+<!-- Footer Section -->
+<footer class="footer">
+  <div class="footer-top">
+    <div class="footer-left">
+      <h2 class="logo">Go German</h2>
+      <p class="subtitle">অল্প টাকায় জার্মান ভাষা শেখার কোর্স করুন।</p>
+    </div>
+    <div class="footer-right">
+      <a href="https://wa.me/qr/CZVUNY2PP7F2M1" target="_blank" class="social-icon si1">
+        <i class="fa fa-whatsapp"></i>
+      </a>
+      <a href="https://www.youtube.com/@GoGermanYt2" target="_blank" class="social-icon si2">
+        <i class="fa fa-youtube"></i>
+      </a>
+    </div>
+  </div>
+
+  <hr class="footer-line">
+
+  <div class="footer-bottom">
+    <div class="footer-bottom-left">
+      © Developer by Laden Hussain. All Rights Reserved 2025
+    </div>
+    <div class="footer-bottom-right">
+      <a href="#">Terms & Conditions</a>
+    </div>
+  </div>
+</footer>
+
+
+
+  <script>
+    // Hamburger Menu
+    const hamburger = document.getElementById('hamburger');
+    const navMenu = document.getElementById('nav-menu');
+
+    hamburger.addEventListener('click', function () {
+      navMenu.classList.toggle('show');
+    });
+
+    // Slider
+    let index = 0;
+    const slides = document.getElementById('slides');
+    const totalSlides = slides.children.length;
+
+    function showSlide(i) {
+      index = (i + totalSlides) % totalSlides;
+      slides.style.transform = `translateX(-${index * 100}%)`;
+    }
+
+    setInterval(() => {
+      showSlide(index + 1);
+    }, 4000);
+
+    // Touch swipe
+    let startX = 0;
+    let endX = 0;
+    const slider = document.getElementById("slider");
+
+    slider.addEventListener("touchstart", (e) => {
+      startX = e.touches[0].clientX;
+    });
+
+    slider.addEventListener("touchend", (e) => {
+      endX = e.changedTouches[0].clientX;
+      if (startX - endX > 50) {
+        showSlide(index + 1);
+      } else if (endX - startX > 50) {
+        showSlide(index - 1);
+      }
+    });
+
+
+
+    const accordionButtons = document.querySelectorAll('.accordion-button');
+const popupBtns = document.querySelectorAll('.popup-btn');
+const popup = document.getElementById('popup');
+const popupImages = document.getElementById('popup-images');
+const closeBtn = document.querySelector('.close-btn');
+
+// Accordion functionality
+accordionButtons.forEach(button => {
+  button.addEventListener('click', () => {
+    const content = button.nextElementSibling;
+    button.classList.toggle('active');
+    if (content.style.display === "block") {
+      content.style.display = "none";
+      button.querySelector('.right-icon').textContent = "▼";
+    } else {
+      content.style.display = "block";
+      button.querySelector('.right-icon').textContent = "▲";
+    }
+  });
+});
+
+// Popup functionality
+popupBtns.forEach(btn => {
+  btn.addEventListener('click', () => {
+    const images = btn.getAttribute('data-images').split(',');
+    popupImages.innerHTML = ''; // clear previous images
+    images.forEach(src => {
+      const img = document.createElement('img');
+      img.src = src.trim();
+      img.alt = "Popup Image";
+      popupImages.appendChild(img);
+    });
+    popup.style.display = "flex";
+  });
+});
+
+closeBtn.addEventListener('click', () => {
+  popup.style.display = "none";
+});
+
+window.addEventListener('click', (e) => {
+  if (e.target == popup) {
+    popup.style.display = "none";
+  }
+});
+
+    
+  </script>
+
+</body>
+</html>
